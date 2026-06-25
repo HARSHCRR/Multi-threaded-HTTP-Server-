@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multithreaded HTTP Server</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Multithreaded HTTP Server</h1>
+    <p>Server is running. Try the endpoints below.</p>
+
+    <section>
+      <h2>GET — Static File</h2>
+      <p>You are reading <code>index.html</code> right now, served as a static file.</p>
+    </section>
+
+    <section>
+      <h2>POST — Echo Endpoint</h2>
+      <form id="post-form">
+        <input type="text" id="post-body" placeholder="Type something..." />
+        <button type="submit">Send POST</button>
+      </form>
+      <pre id="response"></pre>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById('post-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = document.getElementById('post-body').value;
+      const res = await fetch('/echo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: body,
+      });
+      const json = await res.json();
+      document.getElementById('response').textContent = JSON.stringify(json, null, 2);
+    });
+  </script>
+</body>
+</html>
